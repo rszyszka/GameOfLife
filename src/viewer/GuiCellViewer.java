@@ -24,10 +24,8 @@ public class GuiCellViewer implements CellViewer {
 
     @Override
     public void view(Cell cell, int i,int j, int iteration) {
-        GraphicsContext gc = controller.getCanvas().getGraphicsContext2D();
-
         if (cell.getStatus() == 1) {
-            gc.fillRect(size * i, size * j, size, size);
+            controller.getGc().fillRect(size * j, size * i, size, size);
         }
     }
 }

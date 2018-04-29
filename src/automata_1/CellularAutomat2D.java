@@ -12,7 +12,7 @@ import viewer.CellViewer;
 public class CellularAutomat2D {
 
     private final Cell automata[][];
-    private final int size;
+    private final int sizeX, sizeY;
 
     private final BoundaryCondition bc;
 
@@ -20,42 +20,30 @@ public class CellularAutomat2D {
 
     private final CellViewer viewers[];
 
-    public CellularAutomat2D(int size, CellViewer viewers[], BoundaryCondition bc) {
+    public CellularAutomat2D(int[][] tab,int sizeX,int sizeY, CellViewer viewers[], BoundaryCondition bc) {
 
         this.bc = bc;
         this.iteration = 0;
 
-        int tab[][] = new int[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                tab[i][j] = 0;
-            }
-        }
-
-        tab[size / 2][size / 2] = 1;
-        tab[size / 2][size / 2 + 1] = 1;
-        tab[size / 2][size / 2 + 2] = 1;
-        tab[size / 2 + 1][size / 2] = 1;
-        tab[size / 2 + 2][size / 2 + 1] = 1;
-
         this.viewers = viewers;
-        this.size = size;
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
 
-        automata = new Cell[size][size];
+        automata = new Cell[sizeX][sizeX];
 
         if (bc == BoundaryCondition.CLOSED) {
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
+            for (int i = 0; i < sizeY; i++) {
+                for (int j = 0; j < sizeX; j++) {
                     if (i == 0 && j == 0) {
                         int[] neighboars = {0, 0, 0, 0, tab[i][j + 1], 0, tab[i + 1][j + 1]};
                         automata[i][j] = new Cell(tab[i][j], neighboars);
-                    } else if (i == 0 && j == size - 1) {
+                    } else if (i == 0 && j == sizeX - 1) {
                         int[] neighboars = {0, 0, 0, tab[i][j - 1], 0, tab[i + 1][j - 1], tab[i + 1][j], 0};
                         automata[i][j] = new Cell(tab[i][j], neighboars);
-                    } else if (i == size - 1 && j == 0) {
+                    } else if (i == sizeY - 1 && j == 0) {
                         int[] neighboars = {0, tab[i - 1][j], tab[i - 1][j + 1], 0, tab[i][j + 1], 0, 0, 0};
                         automata[i][j] = new Cell(tab[i][j], neighboars);
-                    } else if (i == size - 1 && j == size - 1) {
+                    } else if (i == sizeY - 1 && j == sizeX - 1) {
                         int[] neighboars = {tab[i - 1][j - 1], tab[i - 1][j], 0, tab[i][j - 1], 0, 0, 0, 0};
                         automata[i][j] = new Cell(tab[i][j], neighboars);
                     } else if (j == 0) {
@@ -64,10 +52,10 @@ public class CellularAutomat2D {
                     } else if (i == 0) {
                         int[] neighboars = {0, 0, 0, tab[i][j - 1], tab[i][j + 1], tab[i + 1][j - 1], tab[i + 1][j], tab[i + 1][j + 1]};
                         automata[i][j] = new Cell(tab[i][j], neighboars);
-                    } else if (j == size - 1) {
+                    } else if (j == sizeX - 1) {
                         int[] neighboars = {tab[i - 1][j - 1], tab[i - 1][j], 0, tab[i][j - 1], 0, tab[i + 1][j - 1], tab[i + 1][j], 0};
                         automata[i][j] = new Cell(tab[i][j], neighboars);
-                    } else if (i == size - 1) {
+                    } else if (i == sizeY - 1) {
                         int[] neighboars = {tab[i - 1][j - 1], tab[i - 1][j], tab[i - 1][j + 1], tab[i][j - 1], tab[i][j + 1], 0, 0, 0};
                         automata[i][j] = new Cell(tab[i][j], neighboars);
                     } else {
@@ -79,23 +67,23 @@ public class CellularAutomat2D {
         } else if (bc == BoundaryCondition.PERIODIC) {
             int topIndex, bottomIndex, leftIndex, rightIndex;
 
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
+            for (int i = 0; i < sizeY; i++) {
+                for (int j = 0; j < sizeX; j++) {
                     topIndex = i - 1;
                     bottomIndex = i + 1;
                     leftIndex = j - 1;
                     rightIndex = j + 1;
 
                     if (i == 0) {
-                        topIndex = size - 1;
+                        topIndex = sizeY - 1;
                     }
-                    if (i == (size - 1)) {
+                    if (i == (sizeY - 1)) {
                         bottomIndex = 0;
                     }
                     if (j == 0) {
-                        leftIndex = size - 1;
+                        leftIndex = sizeX - 1;
                     }
-                    if (j == (size - 1)) {
+                    if (j == (sizeX - 1)) {
                         rightIndex = 0;
                     }
 
@@ -113,8 +101,8 @@ public class CellularAutomat2D {
 
     public void view() {
 
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        for (int i = 0; i < sizeY; i++) {
+            for (int j = 0; j < sizeX; j++) {
                 for (CellViewer cv : viewers) {
                     cv.view(automata[i][j], i, j, iteration);
                 }
@@ -125,25 +113,25 @@ public class CellularAutomat2D {
 
     public void nextIteration() {
 
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        for (int i = 0; i < sizeY; i++) {
+            for (int j = 0; j < sizeX; j++) {
                 automata[i][j].nextIteration();
             }
         }
 
         if (bc == BoundaryCondition.CLOSED) {
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
+            for (int i = 0; i < sizeY; i++) {
+                for (int j = 0; j < sizeX; j++) {
                     if (i == 0 && j == 0) {
                         int[] neighboars = {0, 0, 0, 0, automata[i][j + 1].getStatus(), 0, automata[i + 1][j + 1].getStatus()};
                         automata[i][j].update(neighboars);
-                    } else if (i == 0 && j == size - 1) {
+                    } else if (i == 0 && j == sizeX - 1) {
                         int[] neighboars = {0, 0, 0, automata[i][j - 1].getStatus(), 0, automata[i + 1][j - 1].getStatus(), automata[i + 1][j].getStatus(), 0};
                         automata[i][j].update(neighboars);
-                    } else if (i == size - 1 && j == 0) {
+                    } else if (i == sizeY - 1 && j == 0) {
                         int[] neighboars = {0, automata[i - 1][j].getStatus(), automata[i - 1][j + 1].getStatus(), 0, automata[i][j + 1].getStatus(), 0, 0, 0};
                         automata[i][j].update(neighboars);
-                    } else if (i == size - 1 && j == size - 1) {
+                    } else if (i == sizeY - 1 && j == sizeX - 1) {
                         int[] neighboars = {automata[i - 1][j - 1].getStatus(), automata[i - 1][j].getStatus(), 0, automata[i][j - 1].getStatus(), 0, 0, 0, 0};
                         automata[i][j].update(neighboars);
                     } else if (j == 0) {
@@ -152,10 +140,10 @@ public class CellularAutomat2D {
                     } else if (i == 0) {
                         int[] neighboars = {0, 0, 0, automata[i][j - 1].getStatus(), automata[i][j + 1].getStatus(), automata[i + 1][j - 1].getStatus(), automata[i + 1][j].getStatus(), automata[i + 1][j + 1].getStatus()};
                         automata[i][j].update(neighboars);
-                    } else if (j == size - 1) {
+                    } else if (j == sizeX - 1) {
                         int[] neighboars = {automata[i - 1][j - 1].getStatus(), automata[i - 1][j].getStatus(), 0, automata[i][j - 1].getStatus(), 0, automata[i + 1][j - 1].getStatus(), automata[i + 1][j].getStatus(), 0};
                         automata[i][j].update(neighboars);
-                    } else if (i == size - 1) {
+                    } else if (i == sizeY - 1) {
                         int[] neighboars = {automata[i - 1][j - 1].getStatus(), automata[i - 1][j].getStatus(), automata[i - 1][j + 1].getStatus(), automata[i][j - 1].getStatus(), automata[i][j + 1].getStatus(), 0, 0, 0};
                         automata[i][j].update(neighboars);
                     } else {
@@ -167,23 +155,23 @@ public class CellularAutomat2D {
         } else if (bc == BoundaryCondition.PERIODIC) {
             int topIndex, bottomIndex, leftIndex, rightIndex;
 
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {
+            for (int i = 0; i < sizeY; i++) {
+                for (int j = 0; j < sizeX; j++) {
                     topIndex = i - 1;
                     bottomIndex = i + 1;
                     leftIndex = j - 1;
                     rightIndex = j + 1;
 
                     if (i == 0) {
-                        topIndex = size - 1;
+                        topIndex = sizeY - 1;
                     }
-                    if (i == (size - 1)) {
+                    if (i == (sizeY - 1)) {
                         bottomIndex = 0;
                     }
                     if (j == 0) {
-                        leftIndex = size - 1;
+                        leftIndex = sizeX - 1;
                     }
-                    if (j == (size - 1)) {
+                    if (j == (sizeX - 1)) {
                         rightIndex = 0;
                     }
 

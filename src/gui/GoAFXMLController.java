@@ -5,10 +5,9 @@ package gui;
 
 import automata_1.BoundaryCondition;
 import automata_1.CellularAutomat2D;
+import automata_1.CellularAutomataPatterns;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -45,21 +44,26 @@ public class GoAFXMLController implements Initializable {
     private AnimationThread animationThread;
 
     private GraphicsContext gc;
+    
+    private CellularAutomataPatterns patterns;
 
     public void startAction() {
-
+        try{
         if (animationThread == null || !animationThread.isAlive()) {
             CellViewer[] cv = {
-                new GuiCellViewer(this, (int) scrollBar.getValue()), //new ConsoleCellViewer()
+                new GuiCellViewer(this, (int) scrollBar.getValue()), 
+                //new ConsoleCellViewer()
             };
 
             if (ca == null) {
+                patterns = new CellularAutomataPatterns((int) canvas.getWidth() / (int) scrollBar.getValue(),(int) canvas.getHeight()/ (int) scrollBar.getValue());
                 if (comboBox.getValue().equals("Periodyczny")) {
-                    ca = new CellularAutomat2D((int) canvas.getWidth() / (int) scrollBar.getValue(), cv, BoundaryCondition.PERIODIC);
+                    ca = new CellularAutomat2D(patterns.getOscilator(),(int) canvas.getWidth() / (int) scrollBar.getValue(),(int) canvas.getHeight()/ (int) scrollBar.getValue(), cv, BoundaryCondition.PERIODIC);
                 } else {
-                    ca = new CellularAutomat2D((int) canvas.getWidth() / (int) scrollBar.getValue(), cv, BoundaryCondition.CLOSED);
+                    ca = new CellularAutomat2D(patterns.getCannon(),(int) canvas.getWidth() / (int) scrollBar.getValue(),(int) canvas.getHeight()/ (int) scrollBar.getValue(), cv, BoundaryCondition.CLOSED);
                 }
             }
+            
 
             animationThread = new AnimationThread(this);
             animationThread.setDaemon(true);
@@ -69,6 +73,9 @@ public class GoAFXMLController implements Initializable {
                 animationThread.setSpeed((int) speedSlider.getValue());
             });
             animationThread.start();
+        }
+        }catch(ArrayIndexOutOfBoundsException ex){
+            
         }
     }
 
