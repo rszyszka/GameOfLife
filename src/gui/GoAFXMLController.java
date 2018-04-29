@@ -7,6 +7,7 @@ import automata_1.BoundaryCondition;
 import automata_1.CellularAutomat2D;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +16,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.Slider;
 import viewer.CellViewer;
 import viewer.ConsoleCellViewer;
 import viewer.GuiCellViewer;
@@ -33,36 +35,56 @@ public class GoAFXMLController implements Initializable {
     @FXML
     private Label cellSize;
     @FXML
+    private Label speedLabel;
+    @FXML
     private ComboBox<String> comboBox;
+    @FXML
+    private Slider speedSlider;
 
-    CellularAutomat2D ca;
+    private CellularAutomat2D ca;
+    private AnimationThread animationThread;
+
+    private GraphicsContext gc;
 
     public void startAction() {
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        if (animationThread == null || !animationThread.isAlive()) {
+            CellViewer[] cv = {
+                new GuiCellViewer(this, (int) scrollBar.getValue()), //new ConsoleCellViewer()
+            };
 
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            if (ca == null) {
+                if (comboBox.getValue().equals("Periodyczny")) {
+                    ca = new CellularAutomat2D((int) canvas.getWidth() / (int) scrollBar.getValue(), cv, BoundaryCondition.PERIODIC);
+                } else {
+                    ca = new CellularAutomat2D((int) canvas.getWidth() / (int) scrollBar.getValue(), cv, BoundaryCondition.CLOSED);
+                }
+            }
 
-        CellViewer[] cv = {
-            new GuiCellViewer(this, (int) scrollBar.getValue()), //new ConsoleCellViewer()
-        };
-
-        if (comboBox.getValue().equals("Periodyczny")) {
-            ca = new CellularAutomat2D((int) canvas.getWidth() / (int) scrollBar.getValue(), cv, BoundaryCondition.PERIODIC);
-        } else {
-            ca = new CellularAutomat2D((int) canvas.getWidth() / (int) scrollBar.getValue(), cv, BoundaryCondition.CLOSED);
+            animationThread = new AnimationThread(this);
+            animationThread.setDaemon(true);
+            animationThread.setIsStopped(false);
+            animationThread.setSpeed((int) speedSlider.getValue());
+            speedSlider.valueProperty().addListener(listener -> {
+                animationThread.setSpeed((int) speedSlider.getValue());
+            });
+            animationThread.start();
         }
-
-        view();
-
     }
 
     public void pauseAction() {
-
+        if (animationThread != null) {
+            animationThread.setIsStopped(true);
+        }
     }
 
     public void stopAction() {
+        if (animationThread != null) {
+            animationThread.setIsStopped(true);
 
+            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            ca = null;
+        }
     }
 
     public void dragAction() {
@@ -71,13 +93,18 @@ public class GoAFXMLController implements Initializable {
 
     public void view() {
         ca.view();
-//        for (int i = 0; i < (int) canvas.getWidth() / (int) scrollBar.getValue(); i++) {
-//            ca.nextIteration();
-//        }
+    }
+
+    public CellularAutomat2D getCa() {
+        return ca;
     }
 
     public Canvas getCanvas() {
         return canvas;
+    }
+
+    public GraphicsContext getGc() {
+        return gc;
     }
 
     /**
@@ -90,8 +117,12 @@ public class GoAFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         cellSize.setText(String.valueOf((int) scrollBar.getValue()));
-        scrollBar.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+        scrollBar.valueProperty().addListener(listener -> {
             cellSize.setText(String.valueOf((int) scrollBar.getValue()));
+        });
+
+        speedSlider.valueProperty().addListener(listener -> {
+            speedLabel.setText(String.valueOf((int) speedSlider.getValue())+"x");
         });
 
         comboBox.getItems().addAll(
@@ -99,6 +130,8 @@ public class GoAFXMLController implements Initializable {
                 "Periodyczny"
         );
         comboBox.getSelectionModel().selectFirst();
+
+        gc = canvas.getGraphicsContext2D();
     }
 
 }

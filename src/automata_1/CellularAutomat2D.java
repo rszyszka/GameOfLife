@@ -99,7 +99,11 @@ public class CellularAutomat2D {
                         rightIndex = 0;
                     }
 
-                    int[] neighboars = {tab[topIndex][leftIndex], tab[topIndex][j], tab[topIndex][rightIndex], tab[i][leftIndex], tab[i][rightIndex], tab[bottomIndex][leftIndex], tab[bottomIndex][j], tab[bottomIndex][rightIndex]};
+                    int[] neighboars = {
+                        tab[topIndex][leftIndex], tab[topIndex][j], tab[topIndex][rightIndex],
+                        tab[i][leftIndex], tab[i][rightIndex],
+                        tab[bottomIndex][leftIndex], tab[bottomIndex][j], tab[bottomIndex][rightIndex]
+                    };
                     automata[i][j] = new Cell(tab[i][j], neighboars);
 
                 }
@@ -158,6 +162,38 @@ public class CellularAutomat2D {
                         int[] neighboars = {automata[i - 1][j - 1].getStatus(), automata[i - 1][j].getStatus(), automata[i - 1][j + 1].getStatus(), automata[i][j - 1].getStatus(), automata[i][j + 1].getStatus(), automata[i + 1][j - 1].getStatus(), automata[i + 1][j].getStatus(), automata[i + 1][j + 1].getStatus()};
                         automata[i][j].update(neighboars);
                     }
+                }
+            }
+        } else if (bc == BoundaryCondition.PERIODIC) {
+            int topIndex, bottomIndex, leftIndex, rightIndex;
+
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    topIndex = i - 1;
+                    bottomIndex = i + 1;
+                    leftIndex = j - 1;
+                    rightIndex = j + 1;
+
+                    if (i == 0) {
+                        topIndex = size - 1;
+                    }
+                    if (i == (size - 1)) {
+                        bottomIndex = 0;
+                    }
+                    if (j == 0) {
+                        leftIndex = size - 1;
+                    }
+                    if (j == (size - 1)) {
+                        rightIndex = 0;
+                    }
+
+                    int[] neighboars = {
+                        automata[topIndex][leftIndex].getStatus(), automata[topIndex][j].getStatus(), automata[topIndex][rightIndex].getStatus(),
+                        automata[i][leftIndex].getStatus(), automata[i][rightIndex].getStatus(),
+                        automata[bottomIndex][leftIndex].getStatus(), automata[bottomIndex][j].getStatus(), automata[bottomIndex][rightIndex].getStatus()
+                    };
+                    automata[i][j].update(neighboars);
+
                 }
             }
         }
