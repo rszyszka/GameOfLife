@@ -4,7 +4,7 @@
 package viewer;
 
 import automata_1.Cell;
-import gui.FXMLController;
+import gui.GoAFXMLController;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -13,10 +13,10 @@ import javafx.scene.canvas.GraphicsContext;
  */
 public class GuiCellViewer implements CellViewer {
 
-    FXMLController controller;
+    GoAFXMLController controller;
     int size;
 
-    public GuiCellViewer(FXMLController controller, int size) {
+    public GuiCellViewer(GoAFXMLController controller, int size) {
         this.controller = controller;
         this.size = size;
 
@@ -27,7 +27,7 @@ public class GuiCellViewer implements CellViewer {
         GraphicsContext gc = controller.getCanvas().getGraphicsContext2D();
 
         if (cell.getStatus() == 1) {
-            gc.fillRect(size * i, size * iteration, size, size);
+            gc.fillRect(size * i, size * j, size, size);
         }
     }
 }

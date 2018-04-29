@@ -22,18 +22,21 @@ public class ConsoleCellViewer implements CellViewer {
 
     @Override
     public void view(Cell cell, int i,int j, int iteration) {
+        
+        
         if (this.iteration != iteration) {
             System.out.println("\n\n");
             this.iteration++;
+            this.i = 0;
         }
         if (this.i != i) {
             System.out.println("");
             this.i++;
         }
         if (cell.getStatus() == 1) {
-            System.out.print("*");
+            System.out.print("1");
         } else {
-            System.out.print(" ");
+            System.out.print("0");
         }
 
     }
