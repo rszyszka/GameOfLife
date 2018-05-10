@@ -11,7 +11,7 @@ import viewer.CellViewer;
  */
 public class CellularAutomat2D {
 
-    private final Cell automata[][];
+    private Cell automata[][];
     private final int sizeX, sizeY;
 
     private final BoundaryCondition bc;
@@ -20,7 +20,7 @@ public class CellularAutomat2D {
 
     private final CellViewer viewers[];
 
-    public CellularAutomat2D(int[][] tab,int sizeX,int sizeY, CellViewer viewers[], BoundaryCondition bc) {
+    public CellularAutomat2D(int[][] tab, int sizeX, int sizeY, CellViewer viewers[], BoundaryCondition bc) {
 
         this.bc = bc;
         this.iteration = 0;
@@ -29,7 +29,7 @@ public class CellularAutomat2D {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
 
-        automata = new Cell[sizeX][sizeX];
+        automata = new Cell[sizeY][sizeX];
 
         if (bc == BoundaryCondition.CLOSED) {
             for (int i = 0; i < sizeY; i++) {
@@ -183,6 +183,142 @@ public class CellularAutomat2D {
                     automata[i][j].update(neighboars);
 
                 }
+            }
+        }
+    }
+
+    public Cell[][] getAutomata() {
+        return automata;
+    }
+
+    public void setAutomata(int posX, int posY) {
+        if (bc == BoundaryCondition.CLOSED) {
+            if (this.automata[posY][posX].getStatus() == 1) {
+                this.automata[posY][posX].setStatus(0);
+                try {
+                    this.automata[posY - 1][posX - 1].setAliveNeighboars(this.automata[posY - 1][posX - 1].getAliveNeighboars() - 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY - 1][posX].setAliveNeighboars(this.automata[posY - 1][posX].getAliveNeighboars() - 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY - 1][posX + 1].setAliveNeighboars(this.automata[posY - 1][posX + 1].getAliveNeighboars() - 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY][posX - 1].setAliveNeighboars(this.automata[posY][posX - 1].getAliveNeighboars() - 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY][posX + 1].setAliveNeighboars(this.automata[posY][posX + 1].getAliveNeighboars() - 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY + 1][posX - 1].setAliveNeighboars(this.automata[posY + 1][posX - 1].getAliveNeighboars() - 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY + 1][posX].setAliveNeighboars(this.automata[posY + 1][posX].getAliveNeighboars() - 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY + 1][posX + 1].setAliveNeighboars(this.automata[posY + 1][posX + 1].getAliveNeighboars() - 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+
+            } else {
+                this.automata[posY][posX].setStatus(1);
+                try {
+                    this.automata[posY - 1][posX - 1].setAliveNeighboars(this.automata[posY - 1][posX - 1].getAliveNeighboars() + 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY - 1][posX].setAliveNeighboars(this.automata[posY - 1][posX].getAliveNeighboars() + 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY - 1][posX + 1].setAliveNeighboars(this.automata[posY - 1][posX + 1].getAliveNeighboars() + 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY][posX - 1].setAliveNeighboars(this.automata[posY][posX - 1].getAliveNeighboars() + 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY][posX + 1].setAliveNeighboars(this.automata[posY][posX + 1].getAliveNeighboars() + 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY + 1][posX - 1].setAliveNeighboars(this.automata[posY + 1][posX - 1].getAliveNeighboars() + 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY + 1][posX].setAliveNeighboars(this.automata[posY + 1][posX].getAliveNeighboars() + 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+                try {
+                    this.automata[posY + 1][posX + 1].setAliveNeighboars(this.automata[posY + 1][posX + 1].getAliveNeighboars() + 1);
+                } catch (ArrayIndexOutOfBoundsException ex) {
+                }
+            }
+        } else {
+            if (this.automata[posY][posX].getStatus() == 1) {
+                this.automata[posY][posX].setStatus(0);
+
+                int topIndex = posY + 1;
+                int botIndex = posY - 1;
+                int leftIndex = posX - 1;
+                int rightIndex = posX + 1;
+
+                if (posX == 0) {
+                    leftIndex = sizeX - 1;
+                } else if (posX == sizeX - 1) {
+                    rightIndex = 0;
+                }
+                if (posY == 0) {
+                    topIndex = sizeY - 1;
+                } else if (posY == sizeY - 1) {
+                    topIndex = 0;
+                }
+
+                this.automata[topIndex][leftIndex].setAliveNeighboars(this.automata[topIndex][leftIndex].getAliveNeighboars() - 1);
+                this.automata[topIndex][posX].setAliveNeighboars(this.automata[topIndex][posX].getAliveNeighboars() - 1);
+                this.automata[topIndex][rightIndex].setAliveNeighboars(this.automata[topIndex][rightIndex].getAliveNeighboars() - 1);
+                this.automata[posY][leftIndex].setAliveNeighboars(this.automata[posY][leftIndex].getAliveNeighboars() - 1);
+                this.automata[posY][rightIndex].setAliveNeighboars(this.automata[posY][rightIndex].getAliveNeighboars() - 1);
+                this.automata[botIndex][leftIndex].setAliveNeighboars(this.automata[botIndex][leftIndex].getAliveNeighboars() - 1);
+                this.automata[botIndex][posX].setAliveNeighboars(this.automata[botIndex][posX].getAliveNeighboars() - 1);
+                this.automata[botIndex][rightIndex].setAliveNeighboars(this.automata[botIndex][rightIndex].getAliveNeighboars() - 1);
+
+            } else {
+                this.automata[posY][posX].setStatus(1);
+
+                int topIndex = posY + 1;
+                int botIndex = posY - 1;
+                int leftIndex = posX - 1;
+                int rightIndex = posX + 1;
+
+                if (posX == 0) {
+                    leftIndex = sizeX - 1;
+                } else if (posX == sizeX - 1) {
+                    rightIndex = 0;
+                }
+                if (posY == 0) {
+                    botIndex = sizeY - 1;
+                } else if (posY == sizeY - 1) {
+                    topIndex = 0;
+                }
+
+                this.automata[topIndex][leftIndex].setAliveNeighboars(this.automata[topIndex][leftIndex].getAliveNeighboars() + 1);
+                this.automata[topIndex][posX].setAliveNeighboars(this.automata[topIndex][posX].getAliveNeighboars() + 1);
+                this.automata[topIndex][rightIndex].setAliveNeighboars(this.automata[topIndex][rightIndex].getAliveNeighboars() + 1);
+                this.automata[posY][leftIndex].setAliveNeighboars(this.automata[posY][leftIndex].getAliveNeighboars() + 1);
+                this.automata[posY][rightIndex].setAliveNeighboars(this.automata[posY][rightIndex].getAliveNeighboars() + 1);
+                this.automata[botIndex][leftIndex].setAliveNeighboars(this.automata[botIndex][leftIndex].getAliveNeighboars() + 1);
+                this.automata[botIndex][posX].setAliveNeighboars(this.automata[botIndex][posX].getAliveNeighboars() + 1);
+                this.automata[botIndex][rightIndex].setAliveNeighboars(this.automata[botIndex][rightIndex].getAliveNeighboars() + 1);
             }
         }
     }

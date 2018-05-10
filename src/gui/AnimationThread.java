@@ -3,13 +3,16 @@
  */
 package gui;
 
+import java.util.concurrent.TimeUnit;
+import javafx.application.Platform;
+
 /**
  *
  * @author Szysz
  */
 public class AnimationThread extends Thread {
 
-    GoAFXMLController controller;
+    final GoAFXMLController controller;
 
     boolean isStopped = false;
     int speed = 1;
@@ -21,11 +24,15 @@ public class AnimationThread extends Thread {
     @Override
     public synchronized void run() {
         while (!isStopped) {
-            controller.getGc().clearRect(0, 0, controller.getCanvas().getWidth(), controller.getCanvas().getHeight());
-            controller.view();
-            controller.getCa().nextIteration();
+            if (controller.getCa() != null) {
+                controller.getCa().nextIteration();
+            }
+            Platform.runLater(() -> {
+                controller.getGc().clearRect(0, 0, controller.getCanvas().getWidth(), controller.getCanvas().getHeight());
+                controller.view();
+            });
             try {
-                Thread.sleep(500/speed);
+                TimeUnit.MILLISECONDS.sleep(500 / speed);
             } catch (InterruptedException ex) {
             }
         }
@@ -46,7 +53,5 @@ public class AnimationThread extends Thread {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-    
-    
 
 }

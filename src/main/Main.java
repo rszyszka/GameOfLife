@@ -24,6 +24,7 @@ public class Main extends Application {
         Scene scene = new Scene(mainNode);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+        primaryStage.setTitle("Game of Life");
         primaryStage.show();
     }
 

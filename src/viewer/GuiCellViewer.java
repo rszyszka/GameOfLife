@@ -5,7 +5,6 @@ package viewer;
 
 import automata_1.Cell;
 import gui.GoAFXMLController;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
  *
@@ -23,9 +22,12 @@ public class GuiCellViewer implements CellViewer {
     }
 
     @Override
-    public void view(Cell cell, int i,int j, int iteration) {
+    public void view(Cell cell, int i, int j, int iteration) {
         if (cell.getStatus() == 1) {
             controller.getGc().fillRect(size * j, size * i, size, size);
         }
+//else {
+//            controller.getGc().clearRect(size * j, size * i, size, size);
+//        }
     }
 }

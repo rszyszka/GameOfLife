@@ -4,10 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/main/Main.java</file>
-            <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/gui/GoAFXML.fxml</file>
+            <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/automata_1/CellularAutomataPattern.java</file>
+            <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/gui/AnimationThread.java</file>
+            <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/viewer/CellViewer.java</file>
+            <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/viewer/ConsoleCellViewer.java</file>
             <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/viewer/GuiCellViewer.java</file>
             <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/gui/GoAFXMLController.java</file>
-            <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/automata_1/CellularAutomat.java</file>
+            <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/automata_1/CellularAutomat2D.java</file>
             <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/automata_1/Cell.java</file>
         </group>
     </open-files>
