@@ -17,7 +17,7 @@
    <children>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Canvas fx:id="canvas" height="780.0" onMouseClicked="#mouseClickedAction" width="1024.0" HBox.hgrow="ALWAYS">
+            <Canvas fx:id="canvas" height="780.0" onMouseClicked="#mouseClickedAction" onMouseDragged="#mouseClickedAction" width="1024.0" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin></Canvas>

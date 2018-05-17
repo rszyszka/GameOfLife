@@ -79,6 +79,11 @@ public class CellularAutomataPattern {
                 this.pattern[sizeY / 2 + 1][sizeX / 2 + 1] = 1;
                 this.pattern[sizeY / 2 + 1][sizeX / 2 + 2] = 1;
                 break;
+            case "Losowa":
+                for(int i = 0 ; i < sizeY; i ++)
+                    for(int j = 0 ;j < sizeX; j ++)
+                        this.pattern[i][j] = (int) Math.round(Math.random());
+                break;
             default:
                 break;
         }

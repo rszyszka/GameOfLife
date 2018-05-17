@@ -98,24 +98,29 @@ public class GoAFXMLController implements Initializable {
     }
 
     public void mouseClickedAction(MouseEvent e) {
-        int size = (int) cellSizeScrollBar.getValue();
-        int posX, posY;
-        posX = (int) e.getX() / size;
-        if (posX == sizeX) {
-            posX -= 1;
-        }
-        posY = (int) e.getY() / size;
-        if (posY == sizeY) {
-            posY -= 1;
-        }
+        
+            int size = (int) cellSizeScrollBar.getValue();
+            int posX, posY;
+            posX = (int) e.getX() / size;
+            if (posX >= sizeX) {
+                posX = sizeX-1;
+            }else if (posX <0) {
+                posX = 0;
+            }
+            posY = (int) e.getY() / size;
+            if (posY >= sizeY) {
+                posY = sizeY-1;
+            }else if (posY < 0) {
+                posY = 0;
+            }
 
-        if (isStarted) {
-            ca.setAutomata(posX, posY);
-            view();
-        } else {
-            pattern.setCell(posX, posY);
-            draw();
-        }
+            if (isStarted) {
+                ca.setAutomata(posX, posY);
+                view();
+            } else {
+                pattern.setCell(posX, posY);
+                draw();
+            }
 
     }
 
@@ -195,6 +200,7 @@ public class GoAFXMLController implements Initializable {
         );
         patternComboBox.getItems().addAll(
                 "Pusty",
+                "Losowa",
                 "Działo",
                 "Oscylator",
                 "Glider",

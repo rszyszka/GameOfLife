@@ -5,7 +5,6 @@
         <group>
             <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/main/Main.java</file>
             <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/automata_1/CellularAutomataPattern.java</file>
-            <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/gui/AnimationThread.java</file>
             <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/viewer/CellViewer.java</file>
             <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/viewer/ConsoleCellViewer.java</file>
             <file>file:/D:/NAUKA/ModelowanieWieloskalowe/projekty/GameOfLife/src/viewer/GuiCellViewer.java</file>

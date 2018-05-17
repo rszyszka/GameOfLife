@@ -26,8 +26,5 @@ public class GuiCellViewer implements CellViewer {
         if (cell.getStatus() == 1) {
             controller.getGc().fillRect(size * j, size * i, size, size);
         }
-//else {
-//            controller.getGc().clearRect(size * j, size * i, size, size);
-//        }
     }
 }
